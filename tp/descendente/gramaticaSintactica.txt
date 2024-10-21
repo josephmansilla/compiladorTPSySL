@@ -1,0 +1,20 @@
+Gramatica Sintactica:
+
+<objetivo> -> <programa> FDT #terminar
+<programa> -> #comenzar INICIO <listaSentencias> FIN
+
+<listaSentencias> -> <sentencia> {<sentencia>}
+<sentencia> ->  ID := <expresion> #asignar ;
+		|LEER ( <listaIdentificadores> )
+		|ESCRIBIR ( <listaExpresiones> )
+
+<listaIdentificadores> -> <identificador> #leer_id {COMA <identificador> #leer_id}
+<identificador> -> ID #procesar_id
+<listaExpresiones> -> <expresion> #escribir_exp {COMA <expresion> #escribir_exp}
+<expresion> -> <termino> { <operadorAditivo> <termino> #gen_infijo }
+<termino> -> <primaria> { <operadorMultiplicativo> <primaria> }
+<primaria> -> <identificador>
+<primaria> -> CONSTANTE #procesar_cte
+<primaria> -> PARENIZQUIERDO <expresion> PARENDERECHO
+<operadorAditivo> -> SUMA #procesar_op | RESTA #procesar_op
+<operadorMultiplicativo> -> MULTIPLICACION #procesar_op | DIVISION #procesar_op

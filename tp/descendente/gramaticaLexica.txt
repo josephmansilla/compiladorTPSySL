@@ -1,0 +1,14 @@
+Gramatica Lexica :
+
+<token> -> uno de <identificador> <constante>
+<palabraReservada> <operadorAditivo> <asignación>
+<carácterPuntuación>
+<identificador> -> <letra> {<letra o dígito>}
+<constante> -> <dígito> {dígito>}
+<letra o dígito> -> uno de <letra> <dígito>
+<letra> -> una de a-z A-Z
+<dígito> -> uno de 0-9
+<palabraReservada> -> una de inicio fin leer escribir
+<operadorAditivo> -> uno de + -
+<asignación> -> :=
+<carácterPuntuación> -> uno de ( ) , ;
