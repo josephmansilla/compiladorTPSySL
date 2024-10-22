@@ -13,6 +13,8 @@ extern int yylineno;
 extern int yynerrs;
 extern int yylexerrs; 
 extern FILE* yyin; 
+
+int tabla_simbolos[26];  
 %}
 
 %union{
@@ -22,6 +24,11 @@ extern FILE* yyin;
 %token ASIGNACION INICIO FIN LEER ESCRIBIR COMA PUNTOYCOMA SUMA RESTA MULTIPLICACION DIVISION PARENIZQUIERDO PARENDERECHO
 %token <cadena> ID
 %token <num> CONSTANTE
+
+%type <num> sentencia listaExpresiones expresion termino factor
+
+%left SUMA RESTA
+%left MULTIPLICACION DIVISION
 
 %%
 programa: 
@@ -34,41 +41,37 @@ listaSentencias:
     ;
 
 sentencia: 
-    ID {if(yyleng>32){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA 
-    | LEER PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA 
-    | ESCRIBIR PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA
+    ID {if(yyleng>32){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
+    { 
+        tabla_simbolos[($1)[0] - 'A'] = $4 ; 
+    }
+    | LEER PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA {}
+    | ESCRIBIR PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA {}
     ;
 
 listaExpresiones: 
-    listaExpresiones COMA expresion 
-    |expresion
+    listaExpresiones COMA expresion {printf("%i\n", $3);}
+    |expresion {printf("%i\n", $1);}
     ;
 
 expresion: 
-    expresion operadorAditivo termino
-    |termino 
+    expresion SUMA termino {$$ = $1 + $3;}
+    |expresion RESTA termino {$$ = $1 - $3;}
+    |termino {$$=$1;}
     ;
 
 termino:
-    termino operadorMultiplicativo factor
-    |factor
+    termino MULTIPLICACION factor {$$ = $1 * $3;}
+    |termino DIVISION factor {if ($3>0) $$ = $1 / $3; else $$=$1;}
+    |factor {$$=$1;}
     ;
 
 factor: 
-    PARENIZQUIERDO expresion PARENDERECHO
-    |CONSTANTE 
-    |ID
+    PARENIZQUIERDO expresion PARENDERECHO {$$ = $2;}
+    |CONSTANTE {$$ = $1;}
+    |ID {$$ = tabla_simbolos[(*$1) - 'A'];}
     ;
 
-operadorAditivo: 
-    SUMA 
-    |RESTA
-    ;
-
-operadorMultiplicativo:
-    MULTIPLICACION 
-    |DIVISION
-    ;
 
 
 %%
