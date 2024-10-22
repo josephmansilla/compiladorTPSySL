@@ -1,0 +1,4 @@
+El uso del archivo L11 fue importante para la primera versión del compilador ascendente actualizado
+donde usabamos operadores '%left', '%type', entre otros para realizar el proceso de datos dentro de los tokens
+con la gramática de Bison. Sin embargo, luego se derivó a usar información del internet, material de foros y estructuras
+ya bien establecidas en el compilador ascendente. Siguiendo ese mismo estilo se declaró la versión actual...
