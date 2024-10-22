@@ -1,75 +1,106 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> 
+#include <stdio.h> // manejo de E/S
+#include <stdlib.h> // manejo de conversion de valores
+#include <string.h> // manejo de conversion de string
 
-extern char *yytext; 
-extern int yyleng;
+extern char *yytext; // token recibido del lexico
+extern int yyleng; // longitud del token
 
-extern int yylex(void); 
-extern void yyerror(char*); 
+extern int yylex(void); // 
+extern void yyerror(char*); // prototipo de error
 
-extern int yylineno; 
-extern int yynerrs;
-extern int yylexerrs; 
-extern FILE* yyin; 
+extern int yylineno; // linea del error
+extern int yynerrs; // cantidad de errores sintacticos
+extern int yylexerrs; // cantidad de errores lexicos
+extern FILE* yyin; // archivo de entrada de extension .m
 
-int tabla_simbolos[26];  
+void asignarIDs(char* cadena, int num);
+
+struct Identificador{
+    char* cadena;
+    int num;
+};
+
+struct Identificador vectorIdentificadores[100];
+int cantID = 0;
+
 %}
 
 %union{
    char* cadena;
    int num;
 } 
-%token ASIGNACION INICIO FIN LEER ESCRIBIR COMA PUNTOYCOMA SUMA RESTA MULTIPLICACION DIVISION PARENIZQUIERDO PARENDERECHO
+%token ASIGNACION INICIO FIN LEER ESCRIBIR COMA PUNTOYCOMA SUMA RESTA MULTIPLICACION DIVISION PARENIZQUIERDO PARENDERECHO FDT
 %token <cadena> ID
 %token <num> CONSTANTE
 
 %type <num> sentencia listaExpresiones expresion termino factor
 
-%left SUMA RESTA
-%left MULTIPLICACION DIVISION
 
 %%
 programa: 
-    INICIO listaSentencias FIN  {if (yynerrs || yylexerrs) printf("\nSe Detiene...\n"); YYABORT;}
+    INICIO listaSentencias FIN {if (yynerrs || yylexerrs) printf("\nSe Detiene...\n"); YYABORT;}
     ;
 
 listaSentencias: 
     listaSentencias sentencia 
-    |sentencia
+    | sentencia
     ;
 
 sentencia: 
     ID {if(yyleng>32){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
     { 
-        tabla_simbolos[($1)[0] - 'A'] = $4 ; 
+        int num = $4; 
+        char* cadena = $1;
+        asignarIDs(cadena, num);
     }
-    | LEER PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA {}
+    | LEER PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA
+    {
+        int numero;
+        char* cadena = $<cadena>3;
+        char* token = strtok(cadena, ", ");
+        while(token!=NULL){
+            printf("\nIngresar valor del identificador $s: ",token);
+            scanf("d", &numero);
+            asignarIDs(token, numero);
+            token = strtok(NULL, ", ");
+        }
+    }
+    
+    
     | ESCRIBIR PARENIZQUIERDO listaExpresiones PARENDERECHO PUNTOYCOMA {}
     ;
 
 listaExpresiones: 
-    listaExpresiones COMA expresion {printf("%i\n", $3);}
-    |expresion {printf("%i\n", $1);}
+    listaExpresiones COMA expresion {printf("\n%i\n", $3);}
+    | expresion {printf("\n%i\n", $1);}
     ;
 
 expresion: 
     expresion SUMA termino {$$ = $1 + $3;}
-    |expresion RESTA termino {$$ = $1 - $3;}
-    |termino {$$=$1;}
+    | expresion RESTA termino {$$ = $1 - $3;}
+    | termino 
     ;
 
 termino:
     termino MULTIPLICACION factor {$$ = $1 * $3;}
-    |termino DIVISION factor {if ($3>0) $$ = $1 / $3; else $$=$1;}
-    |factor {$$=$1;}
+    | termino DIVISION factor {if ($3 != 0) $$ = $1 / $3; else $$=$1;}
+    | factor 
     ;
 
 factor: 
     PARENIZQUIERDO expresion PARENDERECHO {$$ = $2;}
-    |CONSTANTE {$$ = $1;}
-    |ID {$$ = tabla_simbolos[(*$1) - 'A'];}
+    | CONSTANTE 
+    | ID
+    {
+        char* cadena = $1;
+        int j;
+        for(j=0; j < cantID; j++){
+            if(strcmp(vectorIdentificadores[j].cadena, cadena)==0){
+                $$ = vectorIdentificadores[j].num;
+            }
+        }
+    }
     ;
 
 
@@ -85,6 +116,8 @@ void yyerror(char *s){
 
 
 int main(int argc, char** argv){ 
+    // contador de argumentos (argc)
+    // array de punteros a cadena de chars (char** argv / char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
         printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");
@@ -127,3 +160,17 @@ int main(int argc, char** argv){
     return 0;
 }
 
+void asignarIDs(char* cadena, int num){
+    int i;
+    for(i = 0; i < cantID; i++){
+        if(strcmp(vectorIdentificadores[i].cadena, cadena)==0){
+            vectorIdentificadores[i].num = num;
+            break;
+        }
+    }
+    if (i == cantID){
+        vectorIdentificadores[cantID].cadena = cadena;
+        vectorIdentificadores[cantID].num = num;
+        cantID++;
+    }
+}
