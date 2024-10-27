@@ -77,7 +77,7 @@
 extern char *yytext; // token recibido del lexico
 extern int yyleng; // longitud del token
 
-extern int yylex(void); // 
+extern int yylex(void); // realiza el analisis lexico
 extern void yyerror(char*); // prototipo de error
 
 extern int yylineno; // linea del error
@@ -1403,14 +1403,14 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 42 "sintactico.y"
-    {if (yynerrs || yylexerrs) printf("\nSe Detiene...\n"); YYABORT;}
+    {if (yynerrs || yylexerrs){ printf("\nSe Detiene...\n"); YYABORT; }}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
 #line 51 "sintactico.y"
-    {if(yyleng>10){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}}
+    {if(yyleng>32){printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}}
     break;
 
   case 6:
@@ -1730,17 +1730,17 @@ yyreturn:
 #line 108 "sintactico.y"
 
 
-void yyerror(char *s){
-    fprintf(stderr, "\nError sintactico: %s en la linea %d\n", s, yylineno);
-      if (yytext) {
-        fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
+void yyerror(char *string){
+        fprintf(stderr, "\nError sintactico: %s en la linea %d\n", string, yylineno);
+        if (yytext) {
+            fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
     }
 }
 
 
 int main(int argc, char** argv){ 
     // contador de argumentos (argc)
-    // array de punteros a cadena de chars (char** argv / char[][] argv -> esta ya es una matriz)
+    // array de punteros a cadena de chars (char** argv ó char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
         printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");

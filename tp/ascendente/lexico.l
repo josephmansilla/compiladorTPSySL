@@ -35,7 +35,7 @@ constEntera {digito}({digito})*
 "*" {return MULTIPLICACION;}
 "/" {return DIVISION;}
 \n  { yylineno++; }
-[ \t] {/*ignora espacios en blanco*/}
+[ \t] { /*ignora espacios en blanco*/ }
 . {yylexerrs++; printf("Error léxico: %s es un carácter inválido\n", yytext); return 0;}
 %%
 

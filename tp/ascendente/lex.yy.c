@@ -716,7 +716,7 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 38 "lexico.l"
-{/*ignora espacios en blanco*/}
+{ /*ignora espacios en blanco*/ }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP

@@ -6,7 +6,7 @@
 extern char *yytext; // token recibido del lexico
 extern int yyleng; // longitud del token
 
-extern int yylex(void); // 
+extern int yylex(void); // realiza el analisis lexico
 extern void yyerror(char*); // prototipo de error
 
 extern int yylineno; // linea del error
@@ -39,7 +39,7 @@ int cantID = 0;
 
 %%
 programa: 
-    INICIO listaSentencias FIN {if (yynerrs || yylexerrs) printf("\nSe Detiene...\n"); YYABORT;}
+    INICIO listaSentencias FIN {if (yynerrs || yylexerrs){ printf("\nSe Detiene...\n"); YYABORT; }}
     ;
 
 listaSentencias: 
@@ -48,7 +48,7 @@ listaSentencias:
     ;
 
 sentencia: 
-    ID {if(yyleng>10){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
+    ID {if(yyleng>32){printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
     { 
         int num = $4; 
         char* cadena = $1;
@@ -93,7 +93,7 @@ factor:
     | CONSTANTE 
     | ID
     {
-        char* cadena = $1;
+        char* cadena = $<cadena>1;
         int j;
         for(j=0; j < cantID; j++){
             if(strcmp(vectorIdentificadores[j].cadena, cadena)==0){
@@ -107,17 +107,17 @@ factor:
 
 %%
 
-void yyerror(char *s){
-    fprintf(stderr, "\nError sintactico: %s en la linea %d\n", s, yylineno);
-      if (yytext) {
-        fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
+void yyerror(char *string){
+        fprintf(stderr, "\nError sintactico: %s en la linea %d\n", string, yylineno);
+        if (yytext) {
+            fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
     }
 }
 
 
 int main(int argc, char** argv){ 
     // contador de argumentos (argc)
-    // array de punteros a cadena de chars (char** argv / char[][] argv -> esta ya es una matriz)
+    // array de punteros a cadena de chars (char** argv ó char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
         printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");

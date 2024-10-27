@@ -1,5 +1,4 @@
 inicio
-leer(A, B, C, D, E, F, G);
 A := 1?
 B := 2;
 C := A + B;
