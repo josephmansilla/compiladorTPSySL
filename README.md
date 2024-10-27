@@ -4,7 +4,7 @@
 ### Sintaxis y Semántica de los Lenguajes
 
 
-![VIDEO EXPLICATIVO DEL ANALIZADOR SINTÁCTICO ASCENDENTE](#https://youtu.be/zgRLkn-VvhM)
+[VIDEO EXPLICATIVO DEL ANALIZADOR SINTÁCTICO ASCENDENTE](https://youtu.be/zgRLkn-VvhM) <a href="https://youtu.be/zgRLkn-VvhM" target="_blank"></a>
 
 El video puede ser de gran ayuda para aquellos que quieran entender mejor el código del compilador ascendente
 
