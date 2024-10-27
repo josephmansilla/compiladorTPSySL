@@ -1410,7 +1410,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 51 "sintactico.y"
-    {if(yyleng>32){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}}
+    {if(yyleng>10){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}}
     break;
 
   case 6:
@@ -1433,8 +1433,8 @@ yyreduce:
         char* cadena = (yyvsp[(3) - (5)].cadena);
         char* token = strtok(cadena, ", ");
         while(token!=NULL){
-            printf("\nIngresar valor del identificador $s: ",token);
-            scanf("d", &numero);
+            printf("\nIngresar valor del identificador '%s': ",token);
+            scanf("%d", &numero);
             asignarIDs(token, numero);
             token = strtok(NULL, ", ");
         }

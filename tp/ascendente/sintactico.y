@@ -48,7 +48,7 @@ listaSentencias:
     ;
 
 sentencia: 
-    ID {if(yyleng>32){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
+    ID {if(yyleng>10){ printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
     { 
         int num = $4; 
         char* cadena = $1;
@@ -60,8 +60,8 @@ sentencia:
         char* cadena = $<cadena>3;
         char* token = strtok(cadena, ", ");
         while(token!=NULL){
-            printf("\nIngresar valor del identificador $s: ",token);
-            scanf("d", &numero);
+            printf("\nIngresar valor del identificador '%s': ",token);
+            scanf("%d", &numero);
             asignarIDs(token, numero);
             token = strtok(NULL, ", ");
         }

@@ -1,3 +1,4 @@
 inicio
-A := 1;
+leer(A);
+escribir(A);
 fin
