@@ -39,7 +39,7 @@ int cantID = 0;
 
 %%
 programa: 
-    INICIO listaSentencias FIN {if (yynerrs || yylexerrs){ printf("\nSe Detiene...\n"); YYABORT; }}
+    INICIO listaSentencias FIN {if (yynerrs || yylexerrs){ printf("\nSe deja de procesar...\n"); YYABORT; }}
     ;
 
 listaSentencias: 
@@ -48,7 +48,7 @@ listaSentencias:
     ;
 
 sentencia: 
-    ID {if(yyleng>32){printf("\nError lexico: se excedio la longitud maxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
+    ID {if(yyleng>32){printf("\nError léxico: se excedió la longitud máxima para un identificador\n"); yylexerrs++;}} ASIGNACION expresion PUNTOYCOMA
     { 
         int num = $4; 
         char* cadena = $1;
@@ -108,7 +108,7 @@ factor:
 %%
 
 void yyerror(char *string){
-        fprintf(stderr, "\nError sintactico: %s en la linea %d\n", string, yylineno);
+        fprintf(stderr, "\nError sintáctico: %s en la línea %d\n", string, yylineno);
         if (yytext) {
             fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
     }
@@ -120,12 +120,12 @@ int main(int argc, char** argv){
     // array de punteros a cadena de chars (char** argv ó char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
-        printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la linea de comandos\n");
+        printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la línea de comandos\n");
         return -1;
     }
 
     else if ( argc != 2 ){
-      printf("\nNumero incorrecto de argumentos\n");
+      printf("\nNúmero incorrecto de argumentos\n");
       return -1;
     }
 
@@ -136,7 +136,7 @@ int main(int argc, char** argv){
 
 
     if (argv[1][largoArchivo-1] != 'm' || argv[1][largoArchivo-2] != '.'){ 
-        printf("\nExtension incorrecta (debe ser .m)\n");
+        printf("\nExtensión incorrecta (debe ser .m)\n");
         return EXIT_FAILURE;
     }
 
@@ -146,15 +146,15 @@ int main(int argc, char** argv){
     }
    
     switch (yyparse()){
-        case 0: printf("\n%%% Proceso de compilacion termino exitosamente %%%");
+        case 0: printf("\n%%%% Proceso de compilación terminó éxitosamente %%%%\n");
         break;
-        case 1: printf("\n%%%% Errores en la compilacion %%%%\n");
+        case 1: printf("\n%%%% Errores en la compilación %%%%\n");
         break;
         case 2: printf("\nNo hay memoria suficiente");
         break;
     }
 
-    printf("\n   @ Errores sintacticos: %i\n   @ Errores lexicos: %i\n", yynerrs, yylexerrs);
+    printf("\n     @ Errores sintácticos: %i\n     @ Errores léxicos: %i\n", yynerrs, yylexerrs);
 
     fclose(yyin);
     return 0;
