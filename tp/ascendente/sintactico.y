@@ -21,7 +21,7 @@ struct Identificador{
     int num;
 };
 
-struct Identificador vectorIdentificadores[100];
+struct Identificador vectorIdentificadores[500];
 int cantID = 0;
 
 %}
