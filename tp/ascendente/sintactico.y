@@ -116,8 +116,6 @@ void yyerror(char *string){
 
 
 int main(int argc, char** argv){ 
-    // contador de argumentos (argc)
-    // array de punteros a cadena de chars (char** argv ó char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
         printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la línea de comandos\n");
@@ -131,7 +129,7 @@ int main(int argc, char** argv){
 
     char nombreArchivo[50];
 
-    sprintf(nombreArchivo, "%s", argv[1]);
+    strcpy(nombreArchivo, argv[1]);
     int largoArchivo = strlen(nombreArchivo);
 
 

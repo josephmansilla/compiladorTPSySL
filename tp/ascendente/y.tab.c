@@ -1731,7 +1731,7 @@ yyreturn:
 
 
 void yyerror(char *string){
-        fprintf(stderr, "\nError sintáctico: %s en la linea %d\n", string, yylineno);
+        fprintf(stderr, "\nError sintáctico: %s en la línea %d\n", string, yylineno);
         if (yytext) {
             fprintf(stderr, "                -> Provocado por el token: %s\n", yytext);
     }
@@ -1739,8 +1739,6 @@ void yyerror(char *string){
 
 
 int main(int argc, char** argv){ 
-    // contador de argumentos (argc)
-    // array de punteros a cadena de chars (char** argv ó char[][] argv -> esta ya es una matriz)
 
     if ( argc == 1 ){
         printf("\nDebe ingresar el nombre del archivo fuente (en lenguaje Micro) en la línea de comandos\n");
@@ -1748,13 +1746,13 @@ int main(int argc, char** argv){
     }
 
     else if ( argc != 2 ){
-      printf("\nNumero incorrecto de argumentos\n");
+      printf("\nNúmero incorrecto de argumentos\n");
       return -1;
     }
 
     char nombreArchivo[50];
 
-    sprintf(nombreArchivo, "%s", argv[1]);
+    strcpy(nombreArchivo, argv[1]);
     int largoArchivo = strlen(nombreArchivo);
 
 
@@ -1769,7 +1767,7 @@ int main(int argc, char** argv){
     }
    
     switch (yyparse()){
-        case 0: printf("\n%%%% Proceso de compilación terminó exitosamente %%%%\n");
+        case 0: printf("\n%%%% Proceso de compilación terminó éxitosamente %%%%\n");
         break;
         case 1: printf("\n%%%% Errores en la compilación %%%%\n");
         break;

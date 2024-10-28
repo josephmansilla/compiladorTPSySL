@@ -22,7 +22,7 @@ constEntera {digito}({digito})*
 "leer" {return LEER;}
 "escribir" {return ESCRIBIR;}
 
-{constEntera} {yylval.num=atoi(yytext);return CONSTANTE;}
+{constEntera} {yylval.num = atoi(yytext); return CONSTANTE;}
 {identificador} {yylval.cadena = strdup(yytext); return ID;}
 
 ":=" {return ASIGNACION;}
@@ -36,7 +36,7 @@ constEntera {digito}({digito})*
 "/" {return DIVISION;}
 \n  { yylineno++; }
 [ \t] { /*ignora espacios en blanco*/ }
-. {yylexerrs++; printf("Error léxico: %s es un carácter inválido\n", yytext); return 0;}
+. { yylexerrs++; printf("Error léxico: %s es un carácter inválido\n", yytext); return 0; }
 %%
 
 

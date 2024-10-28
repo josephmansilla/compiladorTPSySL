@@ -656,7 +656,7 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 25 "lexico.l"
-{yylval.num=atoi(yytext);return CONSTANTE;}
+{yylval.num = atoi(yytext); return CONSTANTE;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
@@ -721,7 +721,7 @@ YY_RULE_SETUP
 case 18:
 YY_RULE_SETUP
 #line 39 "lexico.l"
-{yylexerrs++; printf("Error léxico: %s es un carácter inválido\n", yytext); return 0;}
+{ yylexerrs++; printf("Error léxico: %s es un carácter inválido\n", yytext); return 0; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP

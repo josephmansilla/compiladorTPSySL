@@ -6,5 +6,5 @@ D := C - 1;
 E := D * 4;
 F := E / 4;
 G := B + (A - (B / A));
-escribir(A,B,C,D,E,F,G);
+escribir(A, B, C, D, E, F, G);
 fin
