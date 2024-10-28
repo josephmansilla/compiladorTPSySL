@@ -1,5 +1,4 @@
 inicio
-leer(L);
 A := 1;
 B := 2;
 C := A + B;
@@ -9,5 +8,5 @@ F := E / 4;
 G := B + (A - (B / A)); 
 M10 := 10 * 8 + 1;
 escribir(10);
-escribir(L);
+escribir(G, M10);
 fin
