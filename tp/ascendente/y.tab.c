@@ -1775,7 +1775,7 @@ int main(int argc, char** argv){
         break;
     }
 
-    printf("\n     @ Errores sintácticos: %i\n     @ Errores léxicos: %i\n", yynerrs, yylexerrs);
+    printf("\n     @ Errores sintácticos: %d\n     @ Errores léxicos: %d\n", yynerrs, yylexerrs);
 
     fclose(yyin);
     return 0;
